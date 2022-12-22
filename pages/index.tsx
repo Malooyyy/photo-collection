@@ -6,10 +6,23 @@ import classNames from 'classnames'
 import Image from 'next/image'
 import bgImage from '../public/ocean.jpg'
 
+import type { LightGallery } from 'lightgallery/lightgallery'
+import LightGalleryComponent from 'lightgallery/react'
+
+// import styles
+import 'lightgallery/css/lightgallery.css'
+import 'lightgallery/css/lg-zoom.css'
+import 'lightgallery/css/lg-thumbnail.css'
+
+// import plugins if you need
+import lgThumbnail from 'lightgallery/plugins/thumbnail'
+import lgZoom from 'lightgallery/plugins/zoom'
+
 import ocean1 from '../public/1.jpg'
 import ocean2 from '../public/2.jpg'
 import ocean3 from '../public/3.jpg'
 import ocean4 from '../public/gtr.jpg'
+import { useRef } from 'react'
 
 const tabs = [
 	{
@@ -29,6 +42,8 @@ const tabs = [
 const images = [ocean1, ocean2, ocean3, ocean4]
 
 export default function Home() {
+	const lightboxRef = useRef<LightGallery | null>(null)
+
 	return (
 		<div className='h-full  overflow-auto'>
 			<Head>
@@ -47,7 +62,7 @@ export default function Home() {
 
 			<div className='fixed left-0 top-0 w-full h-ful z-10 from-stone-900 bg-gradient-to'></div>
 
-			<header className='fixed bg-black top-0 flex w-full z-20  justify-between items-center h-[90px] px-10'>
+			<header className='fixed bg-black top-0 flex w-full z-30  justify-between items-center h-[90px] px-10'>
 				<span className='uppercase text-lg font-medium'>
 					Photography Portfolio
 				</span>
@@ -85,16 +100,34 @@ export default function Home() {
 									className='flex gap-4'
 									columnClassName=''
 								>
-									{images.map(image => (
+									{images.map((image, idx) => (
 										<Image
 											key={image.src}
 											src={image}
 											alt='placeholder'
-											className='my-4 '
+											className='my-4 hover:opacity-70 cursor-pointer'
 											placeholder='blur'
+											onClick={() => {
+												lightboxRef.current?.openGallery(idx)
+											}}
 										/>
 									))}
 								</Masonry>
+
+								<LightGalleryComponent
+									onInit={ref => {
+										if (ref) {
+											lightboxRef.current = ref.instance
+										}
+									}}
+									speed={500}
+									plugins={[lgThumbnail, lgZoom]}
+									dynamic
+									dynamicEl={images.map(image => ({
+										src: image.src,
+										thumb: image.src,
+									}))}
+								/>
 							</Tab.Panel>
 							<Tab.Panel>Oceans</Tab.Panel>
 							<Tab.Panel>Forests</Tab.Panel>
