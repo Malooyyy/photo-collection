@@ -4,7 +4,7 @@ import { Tab } from '@headlessui/react'
 import Masonry from 'react-masonry-css'
 import classNames from 'classnames'
 import Image from 'next/image'
-import bgImage from '../public/ocean.jpg'
+import bgImage from '../public/wal.jpg'
 
 import type { LightGallery } from 'lightgallery/lightgallery'
 import LightGalleryComponent from 'lightgallery/react'
@@ -18,28 +18,41 @@ import 'lightgallery/css/lg-thumbnail.css'
 import lgThumbnail from 'lightgallery/plugins/thumbnail'
 import lgZoom from 'lightgallery/plugins/zoom'
 
-import ocean1 from '../public/1.jpg'
-import ocean2 from '../public/2.jpg'
-import ocean3 from '../public/3.jpg'
-import ocean4 from '../public/gtr.jpg'
+import amg1 from '../public/amg/amg.five.jpg'
+import amg2 from '../public/amg/amg.one.jpg'
+import amg3 from '../public/amg/amg.six.jpg'
+import amg4 from '../public/amg/amg.two.jpg'
+
+import bmw1 from '../public/bmw/bmw.one.jpg'
+import bmw2 from '../public/bmw/bmw.five.jpg'
+import bmw3 from '../public/bmw/bmw.three.jpg'
+import bmw4 from '../public/bmw/bmw.foo.jpg'
+
+import por1 from '../public/porshe/por.1.jpg'
+import por2 from '../public/porshe/por.2.jpg'
+import por3 from '../public/porshe/por.3.jpg'
+import por4 from '../public/porshe/por.4.jpg'
+
 import { useRef } from 'react'
 
 const tabs = [
 	{
-		key: 'all',
-		display: 'All',
+		key: 'amg',
+		display: 'Mercedes-Benz',
 	},
 	{
-		key: 'oceans',
-		display: 'Oceans',
+		key: 'm',
+		display: 'Bmw',
 	},
 	{
-		key: 'forests',
-		display: 'Forests',
+		key: 'porshe',
+		display: 'Porsche',
 	},
 ]
 
-const images = [ocean1, ocean2, ocean3, ocean4]
+const images1 = [amg1, amg2, amg3, amg4]
+const images2 = [bmw1, bmw2, bmw3, bmw4]
+const images3 = [por1, por2, por3, por4]
 
 export default function Home() {
 	const lightboxRef = useRef<LightGallery | null>(null)
@@ -63,9 +76,7 @@ export default function Home() {
 			<div className='fixed left-0 top-0 w-full h-ful z-10 from-stone-900 bg-gradient-to'></div>
 
 			<header className='fixed bg-black top-0 flex w-full z-30  justify-between items-center h-[90px] px-10'>
-				<span className='uppercase text-lg font-medium'>
-					Photography Portfolio
-				</span>
+				<span className='uppercase text-lg font-medium'>Collections Cars</span>
 				<Link
 					href='#'
 					className='rounded-xl bg-white text-stone-700 px-3 py-2 hover:bg-opacity-90'
@@ -100,7 +111,7 @@ export default function Home() {
 									className='flex gap-4'
 									columnClassName=''
 								>
-									{images.map((image, idx) => (
+									{images1.map((image, idx) => (
 										<Image
 											key={image.src}
 											src={image}
@@ -123,14 +134,82 @@ export default function Home() {
 									speed={500}
 									plugins={[lgThumbnail, lgZoom]}
 									dynamic
-									dynamicEl={images.map(image => ({
+									dynamicEl={images1.map(image => ({
 										src: image.src,
 										thumb: image.src,
 									}))}
 								/>
 							</Tab.Panel>
-							<Tab.Panel>Oceans</Tab.Panel>
-							<Tab.Panel>Forests</Tab.Panel>
+							<Tab.Panel>
+								<Masonry
+									breakpointCols={2}
+									className='flex gap-4'
+									columnClassName=''
+								>
+									{images2.map((image, idx) => (
+										<Image
+											key={image.src}
+											src={image}
+											alt='placeholder'
+											className='my-4 hover:opacity-70 cursor-pointer'
+											placeholder='blur'
+											onClick={() => {
+												lightboxRef.current?.openGallery(idx)
+											}}
+										/>
+									))}
+								</Masonry>
+
+								<LightGalleryComponent
+									onInit={ref => {
+										if (ref) {
+											lightboxRef.current = ref.instance
+										}
+									}}
+									speed={500}
+									plugins={[lgThumbnail, lgZoom]}
+									dynamic
+									dynamicEl={images2.map(image => ({
+										src: image.src,
+										thumb: image.src,
+									}))}
+								/>
+							</Tab.Panel>
+							<Tab.Panel>
+								<Masonry
+									breakpointCols={2}
+									className='flex gap-4'
+									columnClassName=''
+								>
+									{images3.map((image, idx) => (
+										<Image
+											key={image.src}
+											src={image}
+											alt='placeholder'
+											className='my-4 hover:opacity-70 cursor-pointer'
+											placeholder='blur'
+											onClick={() => {
+												lightboxRef.current?.openGallery(idx)
+											}}
+										/>
+									))}
+								</Masonry>
+
+								<LightGalleryComponent
+									onInit={ref => {
+										if (ref) {
+											lightboxRef.current = ref.instance
+										}
+									}}
+									speed={500}
+									plugins={[lgThumbnail, lgZoom]}
+									dynamic
+									dynamicEl={images3.map(image => ({
+										src: image.src,
+										thumb: image.src,
+									}))}
+								/>
+							</Tab.Panel>
 						</Tab.Panels>
 					</Tab.Group>
 				</div>
